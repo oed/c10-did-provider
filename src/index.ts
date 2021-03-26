@@ -54,16 +54,16 @@ const ensureLink = async ({
 
 const didMethods: HandlerMethods<Context> = {
   did_authenticate: async (config: C10Config, params: AuthParams) => {
+    // TODO - verify the caip10-link still points to our key did
     const response = await config.keyDid.send(params)
-    await ensureLink(config, response.did)
     return toGeneralJWS(response)
   },
   did_createJWS: async (config: C10Config, secretKey }, params: CreateJWSParams) => {
+    // TODO - verify the caip10-link still points to our key did
     const requestDid = params.did.split('#')[0]
     // TODO - clean this up (proper did encoding)
     if (requestDid !== 'did:c10:' + config.accountId) throw new RPCError(4100, `Unknown DID: ${did}`)
-    // TODO - store keyDid did string in memory or expose top level in subProvider
-    //params.did = config.keyDid.did
+    params.did = config.authedDid
     return config.keyDid.send(params)
   },
   did_decryptJWE: async (config: C10Config, params: DecryptJWEParams) => {
@@ -102,6 +102,9 @@ export class C10Provider implements RPCConnection {
       metadata: { controllers: [accountId] }
     }, { anchor: false })
     config.authedDid = doc?.content
+    const { did } = await config.keyDid.send({})
+    await ensureLink(config, did)
+    config.authedDid = did
     return new C10Provider(config)
   }
 
