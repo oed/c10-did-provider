@@ -1,0 +1,52 @@
+{
+  "version": "1.0.1",
+  "license": "(Apache-2.0 OR MIT)",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint src test",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "name": "c10-did-provider",
+  "author": "Joel Thorstensson",
+  "module": "dist/key-did-provider-ed25519.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/key-did-provider-ed25519.cjs.production.min.js",
+      "limit": "170 KB"
+    },
+    {
+      "path": "dist/key-did-provider-ed25519.esm.js",
+      "limit": "170 KB"
+    }
+  ],
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^4.6.2",
+    "did-jwt": "^5.0.1",
+    "eslint": "^7.12.1",
+    "eslint-config-3box": "^0.2.0",
+    "husky": "^4.3.0",
+    "prettier": "^2.1.2",
+    "size-limit": "^4.6.2",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.0.3",
+    "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "@stablelib/random": "^1.0.0",
+    "key-did-provider-ed25519": "^1.0.1",
+    "rpc-utils": "^0.1.3"
+  }
+}
